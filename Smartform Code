@@ -1,0 +1,45 @@
+- **Global Data:**
+  - `EBELN` (PO Number)
+  - `AEDAT` (PO Date)
+  - `BUTXT` (Company Name)
+  - `NAME_FIRST`, `NAME_LAST` (Prepared By)
+  - `VENDOR_NAME`, `VENDOR_ADDRESS` (Vendor Details)
+  - `VENDOR_GST` (Vendor GST)
+  - `WAERS` (Currency)
+  - `TOTAL_AMOUNT` (Total Amount)
+  - `TOTAL_TAX` (Total Tax)
+  - `GROSS_TOTAL` (Gross Total)
+  - `ZTERM` (Payment Terms)
+  - `INCO1`, `INCO2` (Incoterms)
+
+- **Internal Table for Items:**
+  - `EBELP` (Item Number)
+  - `MATNR` (Material Number)
+  - `TXZ01` (Material Description)
+  - `MENGE` (Quantity)
+  - `MEINS` (Unit)
+  - `NETPR` (Price)
+
+### 3. **Smart Form Layout Design Steps:**
+
+1. **Main Window Setup:**
+   - Use the `Table` node in the *Main Window* to display the item data.
+   - Bind the table to the internal table containing PO item data (`lt_items`).
+
+2. **Header:**
+   - Add text elements for:
+     - Company Name (`BUTXT`)
+     - PO Title (hardcoded as "Purchase Order")
+     - PO Number, PO Date
+     - Prepared By: (`NAME_FIRST`, `NAME_LAST`)
+     - Vendor Name, Address, and GST Number (`VENDOR_NAME`, `VENDOR_ADDRESS`, `VENDOR_GST`).
+
+3. **Items Table:**
+   - In the main window, create a `Table` node with columns for item data (`EBELP`, `MATNR`, `TXZ01`, `MENGE`, `MEINS`, `NETPR`).
+   - Bind the table to the internal table `lt_items`.
+
+4. **Footer:**
+   - Add text elements for:
+     - Total Amount, Total Tax, and Gross Total.
+     - Payment Terms (`ZTERM`) and Delivery Terms (`INCO1`, `INCO2`).
+     - Hardcoded terms and conditions.
