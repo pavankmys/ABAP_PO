@@ -1,4 +1,4 @@
-REPORT z_print_po_pdf.
+REPORT z_print_po_smartform.
 
 DATA: gv_ebeln TYPE ekko-ebeln,        " Purchase Order Number
       gv_bukrs TYPE ekko-bukrs,        " Company Code
@@ -68,34 +68,32 @@ LOOP AT lt_items INTO DATA(ls_item).
 ENDLOOP.
 gv_gross_total = gv_total_amount + gv_total_tax.
 
-* Adobe Form Call
-CALL FUNCTION 'FP_FUNCTION_MODULE_NAME'
-  EXPORTING
-    i_name     = 'ZPO_FORM'
-  IMPORTING
-    e_funcname = DATA(gv_fm_name).
+* Call Smart Form
+DATA: lv_fm_name TYPE rs38l_fnam.
 
-CALL FUNCTION gv_fm_name
+CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
   EXPORTING
-    /1bcdwb/docparams = DATA(l_doc_params)
-    ebeln             = gv_ebeln
-    bukrs             = gv_bukrs
-    butxt             = gv_butxt
-    aedat             = gv_aedat
-    ernam             = gv_ernam
-    name_first        = gv_name_first
-    name_last         = gv_name_last
-    lifnr             = gv_lifnr
-    waers             = gv_waers
-    taxnum            = gv_taxnum
-    total_amount      = gv_total_amount
-    total_tax         = gv_total_tax
-    gross_total       = gv_gross_total
+    formname           = 'ZPO_SMARTFORM'  " Name of the Smart Form
+  IMPORTING
+    fm_name            = lv_fm_name.
+
+CALL FUNCTION lv_fm_name
+  EXPORTING
+    control_parameters = DATA(lv_control_param)
+    output_options     = DATA(lv_output_options)
+    ebeln              = gv_ebeln
+    butxt              = gv_butxt
+    name_first         = gv_name_first
+    name_last          = gv_name_last
+    lifnr              = gv_lifnr
+    waers              = gv_waers
+    total_amount       = gv_total_amount
+    total_tax          = gv_total_tax
+    gross_total        = gv_gross_total
   TABLES
-    items             = lt_items
-    schedules         = lt_schedules
+    items              = lt_items
   EXCEPTIONS
-    OTHERS            = 1.
+    OTHERS             = 1.
 
 IF sy-subrc = 0.
   WRITE: 'PO printed successfully'.
